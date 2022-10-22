@@ -11,45 +11,49 @@ class ListNode:
 
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
-        result = []
+        root: Optional[ListNode] = ListNode()
+        curr: Optional[ListNode] = root
 
         while list1 != None and list2 != None:
             if list1.val < list2.val:
-                result.append(list1.val)
+                curr.next = ListNode(val=list1.val)
+                curr = curr.next
                 list1 = list1.next
             else:
-                result.append(list2.val)
+                curr.next = ListNode(val=list2.val)
+                curr = curr.next
                 list2 = list2.next
 
         while list1 != None:
-            result.append(list1.val)
+            curr.next = ListNode(val=list1.val)
+            curr = curr.next
             list1 = list1.next
 
         while list2 != None:
-            result.append(list2.val)
+            curr.next = ListNode(val=list2.val)
+            curr = curr.next
             list2 = list2.next
 
+        return root.next
 
-        return self.generateListNode(result)
-
-
-    def generateListNode(self, list: List[int]) -> Optional[ListNode]:
-        if len(list) == 0:
-            return None
-        if len(list) == 1:
-            return ListNode(val=list[0])
-
-        reversed: List[int] = sorted(list, reverse=True)
-        lastNode: ListNode = ListNode(val=reversed[0])
-        node: ListNode = ListNode()
-
-        for n in reversed[1:]:
-            node = ListNode(n, lastNode)
-            lastNode = node
-
-        return node
 
 ### Testcases
+def generateListNode(list: List[int]) -> Optional[ListNode]:
+    if len(list) == 0:
+        return None
+    if len(list) == 1:
+        return ListNode(val=list[0])
+
+    reversed: List[int] = sorted(list, reverse=True)
+    lastNode: ListNode = ListNode(val=reversed[0])
+    node: ListNode = ListNode()
+
+    for n in reversed[1:]:
+        node = ListNode(n, lastNode)
+        lastNode = node
+
+    return node
+
 def printListNode(list: Optional[ListNode]):
     node = list
 
@@ -65,9 +69,9 @@ if __name__ == "__main__":
     solution = Solution()
 
     testcases: List[Tuple[Optional[ListNode], Optional[ListNode]]] = [
-        (solution.generateListNode([1,2,4]), solution.generateListNode([1,3,4])),
-        (solution.generateListNode([]), solution.generateListNode([0])),
-        (solution.generateListNode([1]), solution.generateListNode([])),
+        (generateListNode([1,2,4]), generateListNode([1,3,4])),
+        (generateListNode([]), generateListNode([0])),
+        (generateListNode([1]), generateListNode([])),
     ]
 
     for t in testcases:
